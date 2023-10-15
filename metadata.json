@@ -11,13 +11,13 @@
         "Icon": "preferences-system-windows",
         "Id": "transparenttiles",
         "License": "GPLv3.0",
-        "Name": "transparent Tiles",
+        "Name": "Transparent Tiles",
         "ServiceTypes": [
             "KWin/Script",
             "KCModule"
         ],
         "Version": "1.0",
-        "Website": "https://store.kde.org/p/1619690"
+        "Website": "https://store.kde.org/p/2096692/"
     },
     "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
     "X-KDE-ParentComponents": [
