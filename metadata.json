@@ -2,32 +2,28 @@
     "KPlugin": {
         "Authors": [
             {
-                "Email": "natalie_clarius@yahoo.de",
-                "Name": "Natalie Clarius"
+                "Email": "pasiasach@gmail.com",
+                "Name": "BucketHeadp65"
             }
         ],
-        "Description": "Prevents windows from overlapping by minimizing and restoring windows according to available space",
-        "Description[de]": "Verhindert Überlappen von Fenstern, indem Fenster je nach verfügbarem Platz automatisch minimiert und wiederhergestellt werden",
-        "Description[nl]": "Voorkomt vensteroverlapping door ze te minimaliseren en herstellen op basis van de beschikbare ruimte",
+        "Description": "KWin script to make overlapping windows under the focused one translucent. Useful when you want a non opaque window to always have as a background the Desktop wallpaper",
         "EnabledByDefault": true,
         "Icon": "preferences-system-windows",
-        "Id": "floatingtiles",
+        "Id": "translucenttiles",
         "License": "GPLv3.0",
-        "Name": "Floating Tiles",
-        "Name[de]": "Schwebende Kacheln",
-        "Name[nl]": "Zwevende tegels",
+        "Name": "Translucent Tiles",
         "ServiceTypes": [
             "KWin/Script",
             "KCModule"
         ],
-        "Version": "7.0",
+        "Version": "1.0",
         "Website": "https://store.kde.org/p/1619690"
     },
     "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
     "X-KDE-ParentComponents": [
-        "floatingtiles"
+        "translucenttiles"
     ],
-    "X-KDE-PluginKeyword": "floatingtiles",
+    "X-KDE-PluginKeyword": "translucenttiles",
     "X-Plasma-API": "javascript",
     "X-Plasma-MainScript": "code/main.js"
 }

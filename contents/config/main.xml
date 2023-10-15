@@ -3,14 +3,6 @@
                           http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
   <kcfgfile name="" />
   <group name="">
-    <entry name="autoRestore" type="Bool">
-      <label>Automatically restore minimized windows once enough space is available again</label>
-      <default>true</default>
-    </entry>
-    <entry name="autoReactivate" type="Bool">
-      <label>Automatically reactivate the most recently active window</label>
-      <default>false</default>
-    </entry>
     <entry name="ignoreNonnormal" type="Bool">
       <label>Permit overlap with any non-normal windows</label>
       <default>true</default>
