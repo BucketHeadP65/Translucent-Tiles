@@ -1,5 +1,5 @@
 # README IS NOT UPDATED YET.
-This kwinscript is based on Natalies [latest release](https://github.com/nclarius/floating-tiles/releases/latest) Kwin script. I took the base of the code and adapted it to make the windows transparent instead of minimizing them.
+This kwinscript is based on Natalies [Floating Tiles KWin script](https://github.com/nclarius/floating-tiles/releases/latest) Kwin script. I took the base of the code and adapted it to make the windows transparent instead of minimizing them.
 I leave original README below for credit and reference.
 
 # Floating Tiles: no-stacking stacking window management for KWin
