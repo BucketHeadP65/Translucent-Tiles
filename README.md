@@ -1,6 +1,7 @@
 # README IS NOT UPDATED YET.
 This kwinscript is based on Natalies [Floating Tiles KWin script](https://github.com/nclarius/floating-tiles/releases/latest) Kwin script. I took the base of the code and adapted it to make the windows transparent instead of minimizing them.
-I leave original README below for credit and reference.
+I leave original README below for credit and reference. I have added an option in settings to set the a threshold to define the area under which the window above and in focuss should cover the window(s) bellow to trigger the transparent effect.
+Also another update is that windows below other do not become transparent. Only windows under a focused window that meet the overlap are threshold.
 
 # Floating Tiles: no-stacking stacking window management for KWin
 
