@@ -92,15 +92,6 @@ function removetransparent(window) {
     transparent = transparent.filter(entry => entry != window);
 }
 
-// remove window from stack of to be restored
-// if has been manually rather than automatically been minimized
-// since it is not the most recent entry on the minimized stack
-// todo doesn't work with minimize all
-// function resetMinimized(window) {
-//     if (transparent[0] != window) {
-//         removetransparent(window);
-//     }
-// }
 
 // keep track of restored windows
 var restored = [];
@@ -125,11 +116,11 @@ function onActivated(window) {
     fulldebug(properties(window));
     addActive(window);
     removetransparent(window);
-    minimizeOverlapping(window);
-    restoreMinimized(window);
+    MakeTransparentOverlapping(window);
+    restoreTransparent(window);
 }
 
-// add to watchlist on added and trigger minimize and restore
+// add to watchlist on added and trigger transparency and restore
 // when window is moved or resized or screen geometry changes
 workspace.clientList().forEach(onAdded);
 workspace.clientAdded.connect(onAdded);
@@ -141,7 +132,7 @@ function onAdded(window) {
     onAddedOnRegeometrized(window);
 }
 
-// trigger minimize and restore when window geometry changes
+// trigger transparency and restore when window geometry changes
 function onAddedOnRegeometrized(window) {
     [window.clientGeometryChanged,
     window.frameGeometryChanged,
@@ -158,12 +149,12 @@ function onRegeometrized(window) {
     debug("====================")
     debug("regeometrized", caption(window));
     fulldebug(properties(window));
-    minimizeOverlapping(window);
-    restoreMinimized(window);
+    MakeTransparentOverlapping(window);
+    restoreTransparent(window);
 }
 
 
-// trigger minimize and restore for active window when workspace area changes
+// trigger transparency and restore for active window when workspace area changes
 [workspace.currentDesktopChanged,
 workspace.desktopPresenceChanged,
 workspace.currentActivityChanged,
@@ -179,22 +170,9 @@ function onRelayouted() {
     onRegeometrized(workspace.activeClient);
 }
 
-// trigger minimize, restore and reactivate
-// when window minimized
-// workspace.clientMinimized.connect(onMinimized);
-// function onMinimized(window) {
-//     debug("====================")
-//     debug("minimized", caption(window));
-//     fulldebug(properties(window));
-//     resetMinimized(window);
-//     if (!transparent.includes(window)) { // manually minimized
-//         removeActive(window);
-//     }
-//     restoreMinimized(window);
-//     // reactivateRecent();
-// }
 
-// trigger minimize, restore and reactivate
+
+// trigger transparency, restore and reactivate
 // when window is closed
 workspace.clientRemoved.connect(onRemoved);
 function onRemoved(window) {
@@ -203,22 +181,22 @@ function onRemoved(window) {
     fulldebug(properties(window));
     removeActive(window);
     removetransparent(window);
-    restoreMinimized(window);
+    restoreTransparent(window);
     // reactivateRecent();
     removed = true;
 }
 
 
 ///////////////////////
-// minimize, restore and reactivate
+// transparency, restore and reactivate
 ///////////////////////
 
 
 
-// minimize all windows overlapped by active window
-function minimizeOverlapping(active) {
+// Make transparent all windows overlapped by active window
+function MakeTransparentOverlapping(active) {
     if (!active) active = workspace.activeClient;
-    debug("minimize overlapping", active.caption);
+    debug("make transparent overlapping", active.caption);
     if (!active || ignoreWindow(active) || ignoreFront(active)) return;
     fulldebug(properties(active));
 
@@ -230,10 +208,10 @@ function minimizeOverlapping(active) {
             if (!other || ignoreWindow(other) || ignoreBack(other)) continue;
             if (ignoreOverlap(active, other)) continue;
             fulldebug(properties(other));
-            if (overlap(active, other) && !other.minimized) {
-                debug("  minimizing", caption(other));
+            if (overlap(active, other)) {
+                debug("  making transparent", caption(other));
                 addtransparent(other);
-                minimize(other);
+                makeTransparent(other);
             }
         }
     }
@@ -241,8 +219,8 @@ function minimizeOverlapping(active) {
 
 
 
-// restore all previously minimized windows that are now no longer overlapping
-function restoreMinimized(active) {
+// restore all previously transparent windows that are now no longer overlapping
+function restoreTransparent(active) {
     debug("- apply restore for", caption(active));
     fulldebug(properties(active));
 
@@ -252,7 +230,7 @@ function restoreMinimized(active) {
     //     return;
     // }
 
-    // iterate automatically minimized windows (most recent first)
+    // iterate automatically transparent windows (most recent first)
     for (let i = 0; i < transparent.length; i++) {
         let inactive = transparent[i];
         if (!inactive || ignoreWindow(inactive)) continue;
@@ -288,42 +266,20 @@ function restoreMinimized(active) {
     for (let i = 0; i < restored.length; i++) {
         let inactive = restored[i];
         removetransparent(inactive);
-        unminimize(inactive);
+        undoTransparency(inactive);
     }
     restored = [];
 }
 
-// reactivate the most recently avtive window if there is not already one
-// function reactivateRecent() {
-//     // don't reactivate if auto-reactivate is disabled
-//     if (!config.autoReactivate) return;
-//     if (workspace.activeClient && !workspace.activeClient.desktopWindow)
-//         return;
-//     debug("apply reactivate recent");
-//     // get reactivable clients on current desktop
-//     let reactivable = active.filter(win =>
-//     ((win.desktop == workspace.currentDesktop || win.onAllDesktops)
-//         && win.screen == workspace.activeScreen
-//         && !win.minimized));
-//     fulldebug("reactivable:", reactivable.map(client => properties(client)));
-//     if (reactivable.length == 0) return false;
-//     // activate most recent client on the stack
-//     let recentActive = reactivable[0];
-//     if (!recentActive) return false;
-//     debug("reactivating recent active", caption(recentActive));
-//     workspace.activeClient = recentActive;
-//     return true;
-// }
 
 
-
-function minimize(window) {
+function makeTransparent(window) {
     if (window.opacity == 0.0) return;
     window.opacity = 0.0;
 }
 
-// set opacity to 1.0 to "unminimize"
-function unminimize(window) {
+// restore opacity
+function undoTransparency(window) {
     if (window.opacity == 0.8) return;
     window.opacity = 0.8;
 }
@@ -342,7 +298,7 @@ function calculateOverlapPercentage(win1, win2) {
 
 function overlap(win1, win2) {
     const overlapPercentage = calculateOverlapPercentage(win1, win2);
-    return overlapPercentage >= 10; // Replace YOUR_THRESHOLD with your percentage threshold
+    return overlapPercentage >= 40; // Replace YOUR_THRESHOLD with your percentage threshold
 }
 function overlapHorizontal(win1, win2) {
     return (win1.x <= win2.x && win1.x + win1.width > win2.x)
@@ -383,7 +339,7 @@ function ignoreBack(back) {
         .includes(String(back.resourceClass))) // application excluded
         || (config.includeMode && config.includeBackground && !config.includedAppsBackground
             .includes(String(back.resourceClass))) // application not included
-        || !back.minimizable // not minimizable
+
 }
 
 function ignoreOverlap(front, back) {
