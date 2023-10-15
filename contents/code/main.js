@@ -78,29 +78,29 @@ function removeActive(window) {
     active = active.filter(entry => entry != window);
 }
 
-// keep track of minimized windows
-var minimized = [];
+// keep track of transparent windows
+var transparent = [];
 
-// remove other occurrences and add window to top of stack of minimized
-function addMinimized(window) {
-    removeMinimized(window);
-    minimized.unshift(window);
+// remove other occurrences and add window to top of stack of transparent
+function addtransparent(window) {
+    removetransparent(window);
+    transparent.unshift(window);
 }
 
-// remove window from stack of minimized
-function removeMinimized(window) {
-    minimized = minimized.filter(entry => entry != window);
+// remove window from stack of transparent
+function removetransparent(window) {
+    transparent = transparent.filter(entry => entry != window);
 }
 
 // remove window from stack of to be restored
 // if has been manually rather than automatically been minimized
 // since it is not the most recent entry on the minimized stack
 // todo doesn't work with minimize all
-function resetMinimized(window) {
-    if (minimized[0] != window) {
-        removeMinimized(window);
-    }
-}
+// function resetMinimized(window) {
+//     if (transparent[0] != window) {
+//         removetransparent(window);
+//     }
+// }
 
 // keep track of restored windows
 var restored = [];
@@ -113,7 +113,7 @@ var removed = false;
 // set up triggers
 ///////////////////////
 
-// trigger minimize and restore
+// trigger translucency and restore
 // when window is initially present, added or activated
 workspace.clientList().forEach(onActivated);
 workspace.clientAdded.connect(onActivated);
@@ -124,7 +124,7 @@ function onActivated(window) {
     debug("activated", caption(window));
     fulldebug(properties(window));
     addActive(window);
-    removeMinimized(window);
+    removetransparent(window);
     minimizeOverlapping(window);
     restoreMinimized(window);
 }
@@ -181,18 +181,18 @@ function onRelayouted() {
 
 // trigger minimize, restore and reactivate
 // when window minimized
-workspace.clientMinimized.connect(onMinimized);
-function onMinimized(window) {
-    debug("====================")
-    debug("minimized", caption(window));
-    fulldebug(properties(window));
-    resetMinimized(window);
-    if (!minimized.includes(window)) { // manually minimized
-        removeActive(window);
-    }
-    restoreMinimized(window);
-    // reactivateRecent();
-}
+// workspace.clientMinimized.connect(onMinimized);
+// function onMinimized(window) {
+//     debug("====================")
+//     debug("minimized", caption(window));
+//     fulldebug(properties(window));
+//     resetMinimized(window);
+//     if (!transparent.includes(window)) { // manually minimized
+//         removeActive(window);
+//     }
+//     restoreMinimized(window);
+//     // reactivateRecent();
+// }
 
 // trigger minimize, restore and reactivate
 // when window is closed
@@ -202,7 +202,7 @@ function onRemoved(window) {
     debug("closed", caption(window));
     fulldebug(properties(window));
     removeActive(window);
-    removeMinimized(window);
+    removetransparent(window);
     restoreMinimized(window);
     // reactivateRecent();
     removed = true;
@@ -232,7 +232,7 @@ function minimizeOverlapping(active) {
             fulldebug(properties(other));
             if (overlap(active, other) && !other.minimized) {
                 debug("  minimizing", caption(other));
-                addMinimized(other);
+                addtransparent(other);
                 minimize(other);
             }
         }
@@ -253,8 +253,8 @@ function restoreMinimized(active) {
     // }
 
     // iterate automatically minimized windows (most recent first)
-    for (let i = 0; i < minimized.length; i++) {
-        let inactive = minimized[i];
+    for (let i = 0; i < transparent.length; i++) {
+        let inactive = transparent[i];
         if (!inactive || ignoreWindow(inactive)) continue;
         debug("  - check restore", caption(inactive));
         fulldebug(properties(inactive));
@@ -287,7 +287,7 @@ function restoreMinimized(active) {
 
     for (let i = 0; i < restored.length; i++) {
         let inactive = restored[i];
-        removeMinimized(inactive);
+        removetransparent(inactive);
         unminimize(inactive);
     }
     restored = [];

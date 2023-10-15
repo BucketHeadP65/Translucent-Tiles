@@ -6,12 +6,12 @@
                 "Name": "BucketHeadp65"
             }
         ],
-        "Description": "KWin script to make overlapping windows under the focused one translucent. Useful when you want a non opaque window to always have as a background the Desktop wallpaper",
+        "Description": "KWin script to make overlapping windows under the focused one transparent. Useful when you want a non opaque window to always have as a background the Desktop wallpaper",
         "EnabledByDefault": true,
         "Icon": "preferences-system-windows",
-        "Id": "translucenttiles",
+        "Id": "transparenttiles",
         "License": "GPLv3.0",
-        "Name": "Translucent Tiles",
+        "Name": "transparent Tiles",
         "ServiceTypes": [
             "KWin/Script",
             "KCModule"
@@ -21,9 +21,9 @@
     },
     "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
     "X-KDE-ParentComponents": [
-        "translucenttiles"
+        "transparenttiles"
     ],
-    "X-KDE-PluginKeyword": "translucenttiles",
+    "X-KDE-PluginKeyword": "transparenttiles",
     "X-Plasma-API": "javascript",
     "X-Plasma-MainScript": "code/main.js"
 }
