@@ -1,3 +1,7 @@
+# README IS NOT UPDATED YES UPDATES.
+This kwinscript is based on Natalies [latest release](https://github.com/nclarius/floating-tiles/releases/latest) Kwin script. I took the base of the code and adapted it to make the windows transparent instead of minimizing them.
+I leave original README below for credit and reference.
+
 # Floating Tiles: no-stacking stacking window management for KWin
 
 [latest release](https://github.com/nclarius/floating-tiles/releases/latest) | [view in KDE store](https://store.kde.org/p/1619690)
@@ -8,7 +12,7 @@ This is intended to keep the workspace clutter-free while maximizing screen real
 
 Note that this script is an extension to be run on top of KWin and not a standalone window manager, and will also not do any automatic tiling.
 
-The windows to be affected can be filtered by window type and application. 
+The windows to be affected can be filtered by window type and application.
 
 By default, any window that has been automatically minimized will be automatically restored once the space above it is free again; this can be disabled in the configuration.
 
@@ -64,8 +68,8 @@ To find the window class name of an application: Right-click on the titlebar of 
 
 © 2022-2023 Natalie Clarius \<natalie_clarius@yahoo.de\> [nclarius.github.io](https://nclarius.github.io)
 
-This work is licensed under the GNU General Public License v3.0.  
-This program comes with absolutely no warranty.  
-This is free software, and you are welcome to redistribute and/or modify it under certain conditions.  
+This work is licensed under the GNU General Public License v3.0.
+This program comes with absolutely no warranty.
+This is free software, and you are welcome to redistribute and/or modify it under certain conditions.
 
 If you like this prject, you can make me happy with a review in the [app store](https://store.kde.org/p/1619690).
