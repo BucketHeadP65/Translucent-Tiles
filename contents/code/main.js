@@ -1,6 +1,6 @@
 /*
 KWin Script Floating Tiles
-(C) 2021-2022 Natalie Clarius <natalie_clarius@yahoo.de>
+(C) 2023 BucketHeadp65 <pasiasach@gmail.com>
 GNU General Public License v3.0
 */
 
@@ -11,6 +11,7 @@ GNU General Public License v3.0
 
 const config = {
     // whether to permit windows to be covered by special windows
+    overlapThreshold: Number(readConfig("overlapThreshold", 40)),
     ignoreNonnormal: readConfig("ignoreNonnormal", true),
     ignoreShell: readConfig("ignoreSpecial", true),
     ignoreTransient: readConfig("ignoreTransient", true),
@@ -80,6 +81,9 @@ function removeActive(window) {
 
 // keep track of transparent windows
 var transparent = [];
+
+// keep track of original opacities
+var originalOpacities = new Map();
 
 // remove other occurrences and add window to top of stack of transparent
 function addtransparent(window) {
@@ -272,16 +276,18 @@ function restoreTransparent(active) {
 }
 
 
-
 function makeTransparent(window) {
+    if (!originalOpacities.has(window)) {
+        originalOpacities.set(window, window.opacity);
+    }
     if (window.opacity == 0.0) return;
     window.opacity = 0.0;
 }
-
 // restore opacity
 function undoTransparency(window) {
-    if (window.opacity == 0.8) return;
-    window.opacity = 0.8;
+    const originalOpacity = originalOpacities.get(window);
+    if (typeof originalOpacity === "undefined" || window.opacity == originalOpacity) return;
+    window.opacity = originalOpacity;
 }
 
 ///////////////////////
@@ -298,7 +304,7 @@ function calculateOverlapPercentage(win1, win2) {
 
 function overlap(win1, win2) {
     const overlapPercentage = calculateOverlapPercentage(win1, win2);
-    return overlapPercentage >= 40; // Replace YOUR_THRESHOLD with your percentage threshold
+    return overlapPercentage >= config.overlapThreshold;
 }
 function overlapHorizontal(win1, win2) {
     return (win1.x <= win2.x && win1.x + win1.width > win2.x)

@@ -41,7 +41,11 @@
     </entry>
     <entry name="debugMode" type="Bool">
       <label>Whether to log debug information</label>
-      <default>true</default>
+      <default>true</default>``
+    </entry>
+    <entry name="overlapThreshold" type="Int">
+      <label>Threshold for overlap permission</label>
+      <default>40</default>
     </entry>
   </group>
 </kcfg>
